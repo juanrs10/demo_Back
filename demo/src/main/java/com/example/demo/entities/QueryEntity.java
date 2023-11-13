@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @Entity
-public class QueryEntity {
+public class QueryEntity extends BaseEntity{
 
     private String content;
     private Boolean state;

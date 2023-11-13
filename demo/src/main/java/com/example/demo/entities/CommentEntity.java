@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class CommentEntity {
+public class CommentEntity extends BaseEntity {
 
     private String content;
 

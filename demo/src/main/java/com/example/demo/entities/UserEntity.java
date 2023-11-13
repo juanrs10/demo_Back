@@ -9,11 +9,9 @@ import jakarta.persistence.OneToMany;
 
 import java.util.List;
 
-
-
 @Data
 @Entity
-public class UserEntity {
+public class UserEntity extends BaseEntity {
 
     private String email;
     private String password;
