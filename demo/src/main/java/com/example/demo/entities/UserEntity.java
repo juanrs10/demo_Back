@@ -1,7 +1,13 @@
 package com.example.demo.entities;
 import lombok.Data;
 import javax.persistence.Entity;
-import 
+import com.example.demo.entities.CommentEntity;
+import com.example.demo.entities.QueryEntity;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.OneToMany;
+
+import java.util.List;
 
 
 
@@ -12,8 +18,11 @@ public class UserEntity {
     private String email;
     private String password;
 
+    @OneToMany(cascade=CascadeType.REMOVE)
     private List<CommentEntity> comments;
-    private List<QueryEntity> queriees;
+
+    @OneToMany(cascade=CascadeType.REMOVE)
+    private List<QueryEntity> queries;
 
 
 
