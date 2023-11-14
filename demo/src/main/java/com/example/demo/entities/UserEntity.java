@@ -4,8 +4,8 @@ import javax.persistence.Entity;
 import com.example.demo.entities.CommentEntity;
 import com.example.demo.entities.QueryEntity;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.OneToMany;
+import javax.persistence.CascadeType;
+import javax.persistence.OneToMany;
 
 import java.util.List;
 
