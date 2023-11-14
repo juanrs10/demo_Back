@@ -12,6 +12,11 @@ public class CommentEntity extends BaseEntity {
     private String content;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    private UserEntity User;
+    private UserEntity user;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private QueryEntity query;
+
+
     
 }
