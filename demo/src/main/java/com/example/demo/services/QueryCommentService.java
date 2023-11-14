@@ -23,7 +23,11 @@ public class QueryCommentService {
     private CommentRepository commentRepository;
 
     @Transactional
-    public CommentEntity addCommentToQuery(Long queryId, CommentEntity comment) throws EntityNotFoundException, IllegalOperationException {
+    public CommentEntity addCommentToQuery(Long queryId, Long commentId) throws EntityNotFoundException, IllegalOperationException {
+        
+        CommentEntity comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorMessage.COMMENT_NOT_FOUND));
+
         QueryEntity query = queryRepository.findById(queryId)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorMessage.QUERY_NOT_FOUND));
 
