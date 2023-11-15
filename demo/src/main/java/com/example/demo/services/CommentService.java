@@ -11,8 +11,7 @@ import com.example.demo.exceptions.IllegalOperationException;
 import com.example.demo.repositories.CommentRepository;
 import com.example.demo.repositories.UserRepository;
 
-import javax.transaction.Transactional;
-import javax.xml.stream.events.Comment;
+import jakarta.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import com.example.demo.repositories.QueryRepository;

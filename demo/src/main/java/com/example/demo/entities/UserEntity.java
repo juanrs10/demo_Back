@@ -1,11 +1,11 @@
 package com.example.demo.entities;
 import lombok.Data;
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 import com.example.demo.entities.CommentEntity;
 import com.example.demo.entities.QueryEntity;
 
-import javax.persistence.CascadeType;
-import javax.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.OneToMany;
 
 import java.util.List;
 
