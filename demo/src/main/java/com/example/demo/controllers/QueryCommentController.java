@@ -20,6 +20,9 @@ import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.IllegalOperationException;
 import com.example.demo.services.QueryCommentService;
 import java.util.List;
+import org.springframework.web.bind.annotation.CrossOrigin;
+
+@CrossOrigin(origins = {"http://localhost:4200","http://localhost:8080"})
 
 @RestController
 @RequestMapping("/queries")

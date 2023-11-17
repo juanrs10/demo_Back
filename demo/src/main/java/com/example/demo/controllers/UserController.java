@@ -15,8 +15,9 @@ import com.example.demo.exceptions.IllegalOperationException;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.UserDetailDTO;
 
+@CrossOrigin(origins = {"http://localhost:4200","http://localhost:8080"})
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
@@ -31,7 +32,6 @@ public class UserController {
         List<UserEntity> userEntities = userService.getAllUsers();
         return modelMapper.map(userEntities, new TypeToken<List<UserDetailDTO>>() {}.getType());
     }
-
     @GetMapping(value = "/{id}")
     @ResponseStatus(code = HttpStatus.OK)
     public UserDetailDTO findOne(@PathVariable("id") Long id) throws EntityNotFoundException {

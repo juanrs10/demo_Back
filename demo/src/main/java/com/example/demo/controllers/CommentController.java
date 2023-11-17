@@ -14,9 +14,12 @@ import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.IllegalOperationException;
 import com.example.demo.dto.CommentDTO;
 import com.example.demo.dto.CommentDetailDTO;
+import org.springframework.web.bind.annotation.CrossOrigin;
+
+@CrossOrigin(origins = {"http://localhost:4200","http://localhost:8080"})
 
 @RestController
-@RequestMapping("/comments")
+@RequestMapping("/api/comments")
 public class CommentController {
 
     @Autowired
