@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @CrossOrigin(origins = {"http://localhost:4200","http://localhost:8080"})
 
 @RestController
-@RequestMapping("/queries")
+@RequestMapping("api/queries")
 public class QueryCommentController {
 
     @Autowired

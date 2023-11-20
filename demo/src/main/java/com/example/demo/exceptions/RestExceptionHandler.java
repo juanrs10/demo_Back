@@ -3,13 +3,15 @@ package com.example.demo.exceptions;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.PRECONDITION_FAILED;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
@@ -20,6 +22,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
      * @param ex the EntityNotFoundException
      * @return the ApiError object
      */
+
     @ExceptionHandler(EntityNotFoundException.class)
     protected ResponseEntity<Object> handleEntityNotFound(
     		EntityNotFoundException ex) {

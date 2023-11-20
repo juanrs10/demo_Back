@@ -38,7 +38,11 @@ public class UserService {
             throw new IllegalOperationException("La contraseña no puede estar vacía o ser nula.");
         }
     
-        // Aquí podrías añadir más validaciones si lo necesitas, como formato del email, etc.
+        // Comprobar si ya existe un usuario con el mismo email
+        Optional<UserEntity> existingUser = userRepository.findByEmail(userEntity.getEmail());
+        if (existingUser.isPresent()) {
+            throw new IllegalOperationException("El email ya está en uso.");
+        }
     
         return userRepository.save(userEntity);
     }
@@ -84,5 +88,18 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException(ErrorMessage.USER_NOT_FOUND));
         userRepository.delete(user);
     }
+
+    @Transactional
+    public UserEntity authenticateUser(String email, String password) throws EntityNotFoundException, IllegalOperationException {
+        UserEntity user = userRepository.findByEmail(email)
+            .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con email: " + email));
+
+        if (!user.getPassword().equals(password)) {
+            throw new IllegalOperationException("Contraseña incorrecta.");
+        }
+
+        return user;
+    }
+
 
 }

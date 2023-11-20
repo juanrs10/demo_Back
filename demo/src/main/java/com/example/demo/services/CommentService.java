@@ -40,16 +40,17 @@ public class CommentService {
             throw new IllegalOperationException("El comentario no puede estar vacío.");
         }
 
-        Optional<UserEntity> user = userRepository.findById(userId);
+        UserEntity user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.USER_NOT_FOUND));
 
-        if (user.isEmpty()){
-
-            throw new EntityNotFoundException(ErrorMessage.USER_NOT_FOUND);
-        }
         QueryEntity query = queryRepository.findById(queryId).orElseThrow(() -> new EntityNotFoundException(ErrorMessage.QUERY_NOT_FOUND));
 
-        commentEntity.setUser(user.get());
+        user.getComments().add(commentEntity);
+        commentEntity.setUser(user);
+
+        
+        query.getComments().add(commentEntity);
         commentEntity.setQuery(query);
+
 
         return commentRepository.save(commentEntity);
     }

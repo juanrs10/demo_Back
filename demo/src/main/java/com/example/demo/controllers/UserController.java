@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.services.UserService;
@@ -59,4 +60,11 @@ public class UserController {
     public void delete(@PathVariable("id") Long id) throws EntityNotFoundException, IllegalOperationException {
         userService.deleteUser(id);
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserDTO> login(@RequestBody UserDTO userDTO) throws EntityNotFoundException, IllegalOperationException{
+        UserEntity userEntity = userService.authenticateUser(userDTO.getEmail(), userDTO.getPassword());
+        return ResponseEntity.ok(modelMapper.map(userEntity, UserDTO.class));
+}
+
 }

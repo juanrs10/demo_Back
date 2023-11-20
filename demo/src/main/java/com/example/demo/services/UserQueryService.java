@@ -7,6 +7,9 @@ import com.example.demo.exceptions.ErrorMessage;
 import com.example.demo.exceptions.IllegalOperationException;
 import com.example.demo.repositories.QueryRepository;
 import com.example.demo.repositories.UserRepository;
+
+import autovalue.shaded.com.google.common.base.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,8 +40,10 @@ public class UserQueryService {
 
         queryEntity.setUser(user);
         user.getQueries().add(queryEntity);
+        QueryEntity temp = queryRepository.save(queryEntity);
+        userRepository.save(user);
 
-        return queryRepository.save(queryEntity);
+        return temp;
     }
 
     @Transactional

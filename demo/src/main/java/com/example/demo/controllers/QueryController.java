@@ -1,23 +1,27 @@
 package com.example.demo.controllers;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.services.QueryService;
+import com.google.cloud.bigquery.TableResult;
+import com.example.demo.entities.QueryEntity;
 import com.example.demo.entities.QueryEntity;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.IllegalOperationException;
+import com.example.demo.dto.BigQueryResultDTO;
 import com.example.demo.dto.QueryDTO;
 import com.example.demo.dto.QueryDetailDTO;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import com.example.demo.dto.QueryDTO;
 
 @CrossOrigin(origins = {"http://localhost:4200","http://localhost:8080"})
-
 @RestController
 @RequestMapping("/api/queries")
 public class QueryController {
@@ -32,7 +36,7 @@ public class QueryController {
     @ResponseStatus(code = HttpStatus.OK)
     public List<QueryDetailDTO> findAll() {
         List<QueryEntity> queryEntities = queryService.getAllQueries();
-        return modelMapper.map(queryEntities, new TypeToken<List<QueryDetailDTO>>() {}.getType());
+        return modelMapper.map(queryEntities, new TypeToken<List<QueryDTO>>() {}.getType());
     }
 
     @GetMapping(value = "/{id}")
@@ -48,7 +52,7 @@ public class QueryController {
         QueryEntity queryEntity = queryService.createQuery(userId, modelMapper.map(queryDTO, QueryEntity.class));
         
         return modelMapper.map(queryEntity, QueryDTO.class);
-}
+    }
 
     @PutMapping(value = "/{id}")
     @ResponseStatus(code = HttpStatus.OK)
@@ -63,4 +67,11 @@ public class QueryController {
     public void delete(@PathVariable("id") Long id) throws EntityNotFoundException, IllegalOperationException {
         queryService.deleteQuery(id);
     }
+
+    @PostMapping("/execute")
+    public ResponseEntity<BigQueryResultDTO> executeQuery(@RequestBody QueryDTO queryDTO) throws IllegalOperationException, InterruptedException, IOException  {
+        TableResult tableResult = queryService.executeQuery(queryDTO.getContent());
+        BigQueryResultDTO resultDTO = queryService.convertToDTO(tableResult);
+        return ResponseEntity.ok(resultDTO);
+}
 }

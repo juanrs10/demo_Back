@@ -32,7 +32,7 @@ public class CommentController {
     @ResponseStatus(code = HttpStatus.OK)
     public List<CommentDetailDTO> findAll() {
         List<CommentEntity> commentEntities = commentService.getAllComments();
-        return modelMapper.map(commentEntities, new TypeToken<List<CommentDetailDTO>>() {}.getType());
+        return modelMapper.map(commentEntities, new TypeToken<List<CommentDTO>>() {}.getType());
     }
 
     @GetMapping(value = "/{id}")
@@ -42,7 +42,7 @@ public class CommentController {
         return modelMapper.map(commentEntity, CommentDetailDTO.class);
     }
 
-    @PostMapping("/users/{userId}/queries/{queryId}")
+    @PostMapping("users/{userId}/queries/{queryId}")
     @ResponseStatus(code = HttpStatus.CREATED)
     public CommentDTO create(@PathVariable("userId") Long userId, @PathVariable("queryId") Long queryId, @RequestBody CommentDTO commentDTO) throws IllegalOperationException, EntityNotFoundException {
         CommentEntity commentEntity = commentService.createComment(userId,queryId, modelMapper.map(commentDTO, CommentEntity.class));
