@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import com.google.cloud.bigquery.Field;
 import com.google.common.collect.Lists;
+import com.google.cloud.bigquery.FieldValue;
 
 import autovalue.shaded.com.google.common.base.Optional;
 
@@ -109,7 +110,7 @@ public class QueryService {
             throw new IllegalOperationException("El contenido del query no puede estar vacío o ser solo espacios en blanco.");
         }
     
-        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("demo/src/main/java/com/example/demo/keys/ethqueries-405417-b0b95b72e49c.json"))
+        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("demo/src/main/java/com/example/demo/keys/demoproy-405817-5173a9d2603f.json"))
             .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
         BigQuery bigquery = BigQueryOptions.newBuilder().setCredentials(credentials).build().getService();
     
@@ -128,32 +129,33 @@ public class QueryService {
     public BigQueryResultDTO convertToDTO(TableResult tableResult) throws IllegalOperationException {
         BigQueryResultDTO dto = new BigQueryResultDTO();
         List<Map<String, Object>> rows = new ArrayList<>();
-
-         // Comprobar si hay filas en el resultado
+    
+        // Comprobar si hay filas en el resultado
         if (!tableResult.iterateAll().iterator().hasNext()) {
             // throw new IllegalOperationException("empty response");
             return dto;
         }
-
+    
         // Obtenemos los nombres de las columnas del esquema del resultado
         List<String> columnNames = tableResult.getSchema().getFields().stream()
             .map(Field::getName)
             .collect(Collectors.toList());
-
+    
         // Iteramos sobre cada fila del resultado
         tableResult.iterateAll().forEach(row -> {
             Map<String, Object> rowData = new HashMap<>();
             
             // Iteramos sobre cada campo en la fila
             for (int i = 0; i < row.size(); i++) {
-                // Obtener el valor como String
-                String valueAsString = row.get(i).getValue().toString();
+                FieldValue fieldValue = row.get(i);
+                // Comprobar si el valor es nulo
+                String valueAsString = fieldValue.isNull() ? "null" : fieldValue.getValue().toString();
                 rowData.put(columnNames.get(i), valueAsString);
             }
-
+    
             rows.add(rowData);
         });
-
+    
         dto.setRows(rows);
         return dto;
     }

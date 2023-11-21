@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +21,14 @@ import com.example.demo.dto.BigQueryResultDTO;
 import com.example.demo.dto.QueryDTO;
 import com.example.demo.dto.QueryDetailDTO;
 import com.example.demo.dto.QueryDTO;
+import org.slf4j.Logger;
 
 @CrossOrigin(origins = {"http://localhost:4200","http://localhost:8080"})
 @RestController
 @RequestMapping("/api/queries")
 public class QueryController {
+
+    private static final Logger logger = LoggerFactory.getLogger(QueryController.class);
 
     @Autowired
     private QueryService queryService;
@@ -71,6 +75,7 @@ public class QueryController {
     @PostMapping("/execute")
     public ResponseEntity<BigQueryResultDTO> executeQuery(@RequestBody QueryDTO queryDTO) throws IllegalOperationException, InterruptedException, IOException  {
         TableResult tableResult = queryService.executeQuery(queryDTO.getContent());
+        logger.debug("PERRO HPTA", tableResult);
         BigQueryResultDTO resultDTO = queryService.convertToDTO(tableResult);
         return ResponseEntity.ok(resultDTO);
 }
